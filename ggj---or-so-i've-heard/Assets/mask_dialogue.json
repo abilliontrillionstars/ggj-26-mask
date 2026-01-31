@@ -1,0 +1,49 @@
+{
+	"describe_reason_prelude":[
+		"A fellow at this party has",
+		"Someone at this party has",
+		"One of the partygoers"
+	],
+	"poi_reasons":{
+		"love":[
+			"charmed me beyond what I'd usually admit.",
+			"given me the cold shoulder, and I must bid their heart once more!",
+		],
+		"thief":[
+			"stolen my necklace!"
+		],
+		"murder":[
+			"committed the cold-blooded killing of another guest."
+		]
+	},
+	"describe_mask_prelude":[
+		"Their mask had",
+		"The mask they wore had",
+		"On their mask, there was",
+	],
+	"features":{
+		"crest":[
+			"an unmistakable",
+			"a"
+		],
+		"rhinestones":[
+			"an array of brilliant",
+			"a dazzling set of",
+			"a shining line of"
+		],
+		"stitches":[
+			"some eye-catching",
+			"a sprinkle of",
+			"a "
+		]
+	},
+	"features_meta":{
+		"similar_to_speaker":[
+			"details which match my own mask.",
+			"similarities to my own."
+		],
+		"unique":[
+			"worn by no other partygoer at the ball."
+		]
+	}
+}

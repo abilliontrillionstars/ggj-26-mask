@@ -1,0 +1,13 @@
+{
+	"decor": [
+		"crest",
+		"rhinestones",
+		"tears",
+		"stitches"
+	],
+	"colors":{
+		"silver":"255,255,255",
+		"ruby":"255,0,0",
+		"sapphire":"0,255,0"
+	}
+}
