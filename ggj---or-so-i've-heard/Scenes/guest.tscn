@@ -1,33 +1,42 @@
-[gd_scene load_steps=4 format=3 uid="uid://bsauvq11h8wxb"]
+[gd_scene load_steps=7 format=3 uid="uid://bsauvq11h8wxb"]
 
 [ext_resource type="Texture2D" uid="uid://drwv48xtw4jvw" path="res://Assets/Textures/Gemless Mask.svg" id="1_5o2dd"]
 [ext_resource type="Script" uid="uid://dyvuqcgoy0lq0" path="res://Scripts/guest.gd" id="2_a8vl4"]
 [ext_resource type="Texture2D" uid="uid://bawk5tqrgmt2r" path="res://Assets/Textures/teardrop gemstone.svg" id="3_a8vl4"]
+[ext_resource type="Texture2D" uid="uid://6bw8e2w8dcbv" path="res://Assets/Textures/tears.svg" id="4_u8k8w"]
+[ext_resource type="Texture2D" uid="uid://coiw1rv8wqgp4" path="res://Assets/Textures/stitches.svg" id="5_hgltn"]
+[ext_resource type="Texture2D" uid="uid://b20olpglgihnd" path="res://Assets/Textures/sequins.svg" id="5_pt87w"]
 
 [node name="Guest" type="Sprite2D"]
-scale = Vector2(0.176, 0.2)
+scale = Vector2(0.2, 0.2)
 texture = ExtResource("1_5o2dd")
 script = ExtResource("2_a8vl4")
 
 [node name="centre" type="Sprite2D" parent="."]
 visible = false
-position = Vector2(0, -60)
-scale = Vector2(0.393357, 0.357143)
+position = Vector2(0, -45)
+scale = Vector2(0.4, 0.4)
 texture = ExtResource("3_a8vl4")
 
 [node name="tears" type="Sprite2D" parent="."]
 visible = false
+position = Vector2(-6.10352e-05, 15)
+texture = ExtResource("4_u8k8w")
 
 [node name="crest" type="Sprite2D" parent="."]
 visible = false
 
 [node name="rhinestones" type="Sprite2D" parent="."]
 visible = false
+texture_filter = 1
+texture = ExtResource("5_pt87w")
 
 [node name="stitches" type="Sprite2D" parent="."]
 visible = false
+texture = ExtResource("5_hgltn")
 
 [node name="DialogueIndicator" type="Sprite2D" parent="."]
+visible = false
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-1.67638e-08, -340)
 rotation = -3.1399

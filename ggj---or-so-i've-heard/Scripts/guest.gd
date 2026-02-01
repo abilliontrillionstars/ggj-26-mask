@@ -23,8 +23,8 @@ var rumors: Array[String] = []
 func _ready() -> void:
 	mask_data["decor"].shuffle()
 	var feats = randi()%2 +2 # 2-4
-	if randi()% 3 == 1:
-		feats += 1
+	if randi()% 7 == 0:
+		feats += 1 # and rarely, 5
 	feats = mask_data["decor"].slice(0, feats+1)
 	
 	for feature in feats:
