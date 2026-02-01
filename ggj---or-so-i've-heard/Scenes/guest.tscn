@@ -1,9 +1,34 @@
-[gd_scene load_steps=3 format=3 uid="uid://bsauvq11h8wxb"]
+[gd_scene load_steps=4 format=3 uid="uid://bsauvq11h8wxb"]
 
 [ext_resource type="Texture2D" uid="uid://drwv48xtw4jvw" path="res://Assets/Textures/Gemless Mask.svg" id="1_5o2dd"]
 [ext_resource type="Script" uid="uid://dyvuqcgoy0lq0" path="res://Scripts/guest.gd" id="2_a8vl4"]
+[ext_resource type="Texture2D" uid="uid://bawk5tqrgmt2r" path="res://Assets/Textures/teardrop gemstone.svg" id="3_a8vl4"]
 
 [node name="Guest" type="Sprite2D"]
 scale = Vector2(0.176, 0.2)
 texture = ExtResource("1_5o2dd")
 script = ExtResource("2_a8vl4")
+
+[node name="centre" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, -60)
+scale = Vector2(0.393357, 0.357143)
+texture = ExtResource("3_a8vl4")
+
+[node name="tears" type="Sprite2D" parent="."]
+visible = false
+
+[node name="crest" type="Sprite2D" parent="."]
+visible = false
+
+[node name="rhinestones" type="Sprite2D" parent="."]
+visible = false
+
+[node name="stitches" type="Sprite2D" parent="."]
+visible = false
+
+[node name="DialogueIndicator" type="Sprite2D" parent="."]
+modulate = Color(0, 0, 0, 1)
+position = Vector2(-1.67638e-08, -340)
+rotation = -3.1399
+texture = ExtResource("3_a8vl4")

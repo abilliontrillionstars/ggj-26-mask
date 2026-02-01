@@ -26,8 +26,20 @@ func _ready() -> void:
 	if randi()% 3 == 1:
 		feats += 1
 	feats = mask_data["decor"].slice(0, feats+1)
+	
 	for feature in feats:
 		var colors = mask_data["colors"].keys()
-		var color = colors[randi()%len(colors)]
+		var color: String = colors[randi()%len(colors)]
 		self.mask[feature] = color
+		var as_vec = mask_data["colors"][color].split(",")
+		as_vec = Color(int(as_vec[0]), int(as_vec[1]), int(as_vec[2]))
+		self.find_child(feature).visible = true
+		self.find_child(feature).modulate = as_vec
 	# do sprite config stuff based on mask deets
+
+func _process(delta: float) -> void:
+	if self.rumors != []:
+		$DialogueIndicator.visible = true
+	else:
+		$DialogueIndicator.visible = false
+		
