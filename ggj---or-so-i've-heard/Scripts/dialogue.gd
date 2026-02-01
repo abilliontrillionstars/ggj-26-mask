@@ -20,6 +20,7 @@ func next_text():
 			roll_text(text_queue.pop_front())
 		else:
 			roll_text("Or so I hear...")
+			$NextButton.disabled = true
 			$/root/root/RoomButtonPivot.play("appear")
 func queue_text(t: String) -> void:
 	text_queue.append(t)

@@ -1,9 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://1j10dd732qah"]
+[gd_scene load_steps=13 format=3 uid="uid://1j10dd732qah"]
 
 [ext_resource type="Script" uid="uid://cm8lwa2hmf0o2" path="res://Scripts/root.gd" id="1_i04dx"]
 [ext_resource type="Script" uid="uid://dwgo7dyy852hn" path="res://Scripts/dialogue.gd" id="2_8pvmw"]
 [ext_resource type="Texture2D" uid="uid://drwv48xtw4jvw" path="res://Assets/Textures/Gemless Mask.svg" id="2_ckhy6"]
-[ext_resource type="Texture2D" uid="uid://bawk5tqrgmt2r" path="res://Assets/Textures/teardrop gemstone.svg" id="3_dun2r"]
 [ext_resource type="Texture2D" uid="uid://cawmqiuje5f2l" path="res://Assets/Textures/Placeholders/whisper_placeholder.png" id="4_4g5cr"]
 [ext_resource type="Texture2D" uid="uid://do5s2acgay1fm" path="res://Assets/Textures/Placeholders/foyer_placeholder.png" id="5_ckhy6"]
 [ext_resource type="Script" uid="uid://pbt27nduengp" path="res://Scripts/rumors.gd" id="5_dun2r"]
@@ -152,11 +151,6 @@ offset_bottom = 40.0
 visible = false
 offset_right = 16.0
 offset_bottom = 17.0
-
-[node name="Sprite2D" type="Sprite2D" parent="PlayerMask"]
-position = Vector2(0.829648, -36.0607)
-scale = Vector2(0.391368, 0.458462)
-texture = ExtResource("3_dun2r")
 
 [node name="ScreenRumor" type="Sprite2D" parent="."]
 position = Vector2(577, 325)

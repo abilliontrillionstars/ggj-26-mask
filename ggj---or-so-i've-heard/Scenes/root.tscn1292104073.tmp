@@ -1,9 +1,8 @@
-[gd_scene load_steps=14 format=3 uid="uid://1j10dd732qah"]
+[gd_scene load_steps=13 format=3 uid="uid://1j10dd732qah"]
 
 [ext_resource type="Script" uid="uid://cm8lwa2hmf0o2" path="res://Scripts/root.gd" id="1_i04dx"]
 [ext_resource type="Script" uid="uid://dwgo7dyy852hn" path="res://Scripts/dialogue.gd" id="2_8pvmw"]
 [ext_resource type="Texture2D" uid="uid://drwv48xtw4jvw" path="res://Assets/Textures/Gemless Mask.svg" id="2_ckhy6"]
-[ext_resource type="Texture2D" uid="uid://bawk5tqrgmt2r" path="res://Assets/Textures/teardrop gemstone.svg" id="3_dun2r"]
 [ext_resource type="Texture2D" uid="uid://cawmqiuje5f2l" path="res://Assets/Textures/Placeholders/whisper_placeholder.png" id="4_4g5cr"]
 [ext_resource type="Texture2D" uid="uid://do5s2acgay1fm" path="res://Assets/Textures/Placeholders/foyer_placeholder.png" id="5_ckhy6"]
 [ext_resource type="Script" uid="uid://pbt27nduengp" path="res://Scripts/rumors.gd" id="5_dun2r"]
@@ -144,19 +143,12 @@ scale = Vector2(1.20533, 1.10924)
 texture = ExtResource("2_ckhy6")
 
 [node name="ItemList" type="ItemList" parent="PlayerMask"]
-visible = false
 offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="Tree" type="Tree" parent="PlayerMask"]
-visible = false
 offset_right = 16.0
 offset_bottom = 17.0
-
-[node name="Sprite2D" type="Sprite2D" parent="PlayerMask"]
-position = Vector2(0.829648, -36.0607)
-scale = Vector2(0.391368, 0.458462)
-texture = ExtResource("3_dun2r")
 
 [node name="ScreenRumor" type="Sprite2D" parent="."]
 position = Vector2(577, 325)
@@ -166,11 +158,12 @@ texture = ExtResource("4_4g5cr")
 visibility_layer = 3
 z_index = 1
 offset_left = -348.0
-offset_top = 121.0
-offset_right = 397.0
-offset_bottom = 285.0
+offset_top = 45.0
+offset_right = 418.0
+offset_bottom = 305.0
 rotation = -0.00326978
 theme_override_font_sizes/normal_font_size = 30
+text = "jhaboseifboiwsebfoaiwehbfoawijehbfoiawjebfoiawjebfaoiwjefbaoiwjefbeebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebebb"
 scroll_active = false
 script = ExtResource("2_8pvmw")
 
