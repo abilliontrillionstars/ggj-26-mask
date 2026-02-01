@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://1j10dd732qah"]
+[gd_scene load_steps=10 format=3 uid="uid://1j10dd732qah"]
 
 [ext_resource type="Script" uid="uid://cm8lwa2hmf0o2" path="res://Scripts/root.gd" id="1_i04dx"]
 [ext_resource type="Script" uid="uid://dwgo7dyy852hn" path="res://Scripts/dialogue.gd" id="2_8pvmw"]
 [ext_resource type="Texture2D" uid="uid://ddpg6jvp5r0w" path="res://Assets/Textures/Placeholders/mask_placeholder.png" id="2_vnucn"]
 [ext_resource type="Texture2D" uid="uid://cawmqiuje5f2l" path="res://Assets/Textures/Placeholders/whisper_placeholder.png" id="4_4g5cr"]
 [ext_resource type="Texture2D" uid="uid://do5s2acgay1fm" path="res://Assets/Textures/Placeholders/foyer_placeholder.png" id="5_ckhy6"]
+[ext_resource type="Script" uid="uid://pbt27nduengp" path="res://Scripts/rumors.gd" id="5_dun2r"]
 
 [sub_resource type="Animation" id="Animation_ckhy6"]
 length = 0.001
@@ -103,6 +104,23 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="RumorContainer" type="Node" parent="ScreenRumor/DialogueRumor"]
+script = ExtResource("5_dun2r")
+
+[node name="FoyerButton" type="Button" parent="ScreenRumor"]
+visible = false
+anchors_preset = -1
+anchor_left = -0.0102859
+anchor_top = -0.142408
+anchor_right = -0.0102859
+anchor_bottom = -0.142408
+offset_left = -33.1713
+offset_top = 168.565
+offset_right = 59.8287
+offset_bottom = 199.565
+text = "To Foyer ->"
+metadata/_edit_use_anchors_ = true
+
 [node name="ScreenFoyer" type="Sprite2D" parent="."]
 position = Vector2(1727, 325)
 texture = ExtResource("5_ckhy6")
@@ -127,6 +145,14 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="Room" type="Node2D" parent="ScreenFoyer"]
+
+[node name="RumorButton" type="Button" parent="ScreenFoyer"]
+visible = false
+offset_left = -48.0
+offset_top = 269.0
+offset_right = 54.0
+offset_bottom = 300.0
+text = "<- To Rumor"
 
 [node name="Camera2D" type="Camera2D" parent="."]
 position = Vector2(575, 324)
