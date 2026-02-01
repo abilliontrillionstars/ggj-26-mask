@@ -1,27 +1,46 @@
 extends Node
 
-func gen_poi_dialogue(poi_reason: String) -> String:
+func gen_rumor_poi(poi_reason: String) -> String:
 	"get some dialogue that details a guest's person of interest."
-	var genned = ""
-	var i = randi()%len(mask_dialogue["describe_reason_prelude"])
-	genned += mask_dialogue["describe_reason_prelude"][i] + " "
-	
-	i = randi()%len(mask_dialogue["poi_reasons"][poi_reason])
-	genned += mask_dialogue["poi_reasons"][poi_reason][i]
+	var genned = mask_dialogue["describe_reason_prelude"].pick_random() + " "
+	genned += mask_dialogue["poi_reasons"][poi_reason].pick_random()
 	return genned
 
-func gen_hint_positive(feature: String, color: String) -> String:
-	"get a rumor in the form 'has these things on their mask'."
-	var genned = ""
-	var i = randi()%len(mask_dialogue["describe_mask_prelude"])
-	genned += mask_dialogue["describe_mask_prelude"][i] + " "
-	
-	i = randi()%len(mask_dialogue["features"][feature])
-	genned += mask_dialogue["features"][feature][i] + " "
+func gen_rumor_positive(feature: String, color: String) -> String:
+	"get a rumor in the form 'has these features on their mask'."
+	var genned = mask_dialogue["describe_mask_prelude"].pick_random() + " "
+	genned += mask_dialogue["features"][feature].pick_random() + " "
 	genned += color +" "+feature+"."
 	return genned
-func gen_hint_similar():
-	return
+func gen_rumor_negative(feature: String) -> String:
+	"get a rumor in the form 'lacks this feature on their mask'."
+	var genned = mask_dialogue["describe_mask_prelude"].pick_random() + " "
+	genned += mask_dialogue["not_features"].pick_random() + " "
+	genned += mask_dialogue["features"][feature].pick_random() + " "
+	genned += feature + "."
+	return genned
+func gen_rumor_similar(n: int):
+	"get a rumor in the form 'has n features in common with mine'."
+	var genned = mask_dialogue["describe_mask_prelude"].pick_random() + " "
+	genned += mask_dialogue["features_meta"]["similar_to_speaker"].pick_random()
+	genned += " "+str(n)
+	genned += mask_dialogue["features_meta"]["similar_to_speaker_post"].pick_random()
+	return genned
+func gen_rumor_unique():
+	"get a rumour in the form 'had something unique to the whole party on their mask'."
+	var genned = mask_dialogue["describe_mask_prelude"].pick_random() + " "
+	genned += mask_dialogue["features_meta"]["unique"].pick_random()
+	return genned
+func gen_rumor_match(feature, feature2):
+	"get a rumour in the form 'had two features matching color'."
+	var genned = mask_dialogue["describe_mask_prelude"].pick_random() + " "
+	genned += mask_dialogue["features"][feature].pick_random() + " "
+	genned += feature + " "
+	genned += mask_dialogue["features_meta"]["matching"].pick_random() + " "
+	genned += feature2 + "."
+	return genned
+
+
 var mask_dialogue = {
 	"describe_reason_prelude":[
 		"A fellow at this party has",
@@ -42,14 +61,16 @@ var mask_dialogue = {
 		]
 	},
 	"describe_mask_prelude":[
-		"Their mask had",
+		"Their mask bore",
 		"The mask they wore had",
 		"On their mask, there was",
+		"I remember their mask held"
 	],
 	"features":{
 		"crest":[
 			"an unmistakable",
-			"a"
+			"a large",
+			"a rather majestic"
 		],
 		"rhinestones":[
 			"an array of brilliant",
@@ -59,18 +80,33 @@ var mask_dialogue = {
 		"stitches":[
 			"some eye-catching",
 			"a sprinkle of",
-			"a "
+			"a flourish of"
+		],
+		"centre":[
+			"a",
 		]
 	},
+	"not_features":[
+		"an absence of",
+		"a distinct lack of",
+	],
 	"features_meta":{
 		"similar_to_speaker":[
-			"details which match my own mask.",
-			"similarities to my own.",
-			"bedazzlements that are also present on this one."
+			"some details which match my own mask.",
+			"some similarities to this one.",
+			"some bedazzlements that are also present on the one I'm wearing."
+		],
+		"similar_to_speaker_post":[
+			", to be exact.",
+			", if I recall..."
 		],
 		"unique":[
-			"worn by no other partygoer at the ball.",
-			"of a color unique to them. No other guests had that color."
+			"something worn by no other partygoer at the ball.",
+			"a feature wholly unique to them. No other guests dared to copy them, it seems..."
+		],
+		"matching":[
+			"matching its",
+			"the same color of its"
 		]
 	},
 	"rumor_leadin":[
@@ -79,6 +115,8 @@ var mask_dialogue = {
 	],
 	"no_rumors":[
 		"Sorry, friend. I've not anything for you.",
+		"I haven't heard anything...",
+		"Oh, I'm not one to listen. You'll find someone else, I know it.",
 		"Hmm... well, they certainly wore a mask. Does that help?"
 	]
 }
