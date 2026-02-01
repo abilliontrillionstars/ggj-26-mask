@@ -1,4 +1,20 @@
-{
+extends Node
+
+func gen_poi_dialogue(poi_reason: String) -> String:
+	"get some dialogue that details a guest's person of interest."
+	var gen = ""
+	var i = randi()%len(mask_dialogue["describe_reason_prelude"])
+	gen += mask_dialogue["describe_reason_prelude"][i] + " "
+	
+	i = randi()%len(mask_dialogue["poi_reasons"][poi_reason])
+	gen += mask_dialogue["poi_reasons"][poi_reason]
+	return gen
+
+func gen_rumor_positive() -> String:
+	"get a rumor in the form 'has these things on their mask'."
+	return ""
+
+var mask_dialogue = {
 	"describe_reason_prelude":[
 		"A fellow at this party has",
 		"Someone at this party has",
@@ -11,7 +27,7 @@
 		],
 		"thief":[
 			"stolen my necklace!",
-			"been stealin"
+			"been stealing from the other guests."
 		],
 		"murder":[
 			"committed the cold-blooded killing of another guest."
