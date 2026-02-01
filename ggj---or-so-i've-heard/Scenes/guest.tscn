@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://bsauvq11h8wxb"]
 
-[ext_resource type="Texture2D" uid="uid://cnbta5kwvvhm2" path="res://Assets/Textures/Placeholders/mask_placeholder_empty.png" id="1_5o2dd"]
+[ext_resource type="Texture2D" uid="uid://drwv48xtw4jvw" path="res://Assets/Textures/Gemless Mask.svg" id="1_5o2dd"]
 [ext_resource type="Script" uid="uid://dyvuqcgoy0lq0" path="res://Scripts/guest.gd" id="2_a8vl4"]
 
 [node name="Guest" type="Sprite2D"]
-scale = Vector2(-0.226895, 0.250212)
+scale = Vector2(0.176, 0.2)
 texture = ExtResource("1_5o2dd")
 script = ExtResource("2_a8vl4")

@@ -7,33 +7,30 @@ var text_queue = []
 
 
 func _ready() -> void:
-	for i in range(10):
-		text_queue.append("example generated text!! this is text number "+str(i)+".")
 	# note to self: this looks deceptive but is fine.
 		# $ notation just can only see children, and 
 		# the node must be loaded (which it is when
 		# this _ready is called), making it safe here.
 	$NextButton.pressed.connect(self.next_text)
 
-
-func _process(delta: float) -> void:
-	pass
-
+	
 func next_text():
-	if is_typing:
-		print("tried to advance text while typing") 
-		return
-	if len(text_queue) > 0:
-		roll_text(text_queue.pop_front())
+	if not is_typing:
+		if len(text_queue) > 0:
+			roll_text(text_queue.pop_front())
+		else:
+			roll_text("Or so I hear...")
+			$/root/root/RoomButtonPivot.play("appear")
 func queue_text(t: String) -> void:
 	text_queue.append(t)
 func roll_text(t: String) -> void:
 	# concurrency lock
 	is_typing = true
 	# animate the text character by character
-	self.text = ""
+	self.visible_characters = 0
+	self.text = t
 	for char in t:
-		self.text += char
+		self.visible_characters += 1
 		# no typing sound, I think
 		#AudioStreamPlayer
 		# compact delay thing. looks jank but it's common I promise
