@@ -13,11 +13,7 @@ var mask_data = {
 }
 
 # randomly genned upon instantiation
-@export var mask_features: Dictionary[String, String] = {}
-
-# nullable, assigned by game manager
-@export var person_of_interest: Node
-@export var dialogue: Array[String] 
+var mask_features: Dictionary[String, String] = {}
 
 func _ready() -> void:
 	mask_data["decor"].shuffle()
