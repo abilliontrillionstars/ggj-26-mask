@@ -2,7 +2,7 @@
 	"describe_reason_prelude":[
 		"A fellow at this party has",
 		"Someone at this party has",
-		"One of the partygoers"
+		"One of the partygoers has"
 	],
 	"poi_reasons":{
 		"love":[
@@ -10,7 +10,8 @@
 			"given me the cold shoulder, and I must bid their heart once more!",
 		],
 		"thief":[
-			"stolen my necklace!"
+			"stolen my necklace!",
+			"been stealin"
 		],
 		"murder":[
 			"committed the cold-blooded killing of another guest."

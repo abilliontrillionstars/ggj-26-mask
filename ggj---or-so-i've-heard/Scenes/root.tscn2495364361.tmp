@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://1j10dd732qah"]
+[gd_scene load_steps=10 format=3 uid="uid://1j10dd732qah"]
 
 [ext_resource type="Script" uid="uid://cm8lwa2hmf0o2" path="res://Scripts/root.gd" id="1_i04dx"]
 [ext_resource type="Script" uid="uid://dwgo7dyy852hn" path="res://Scripts/dialogue.gd" id="2_8pvmw"]
 [ext_resource type="Texture2D" uid="uid://ddpg6jvp5r0w" path="res://Assets/Textures/Placeholders/mask_placeholder.png" id="2_vnucn"]
 [ext_resource type="Texture2D" uid="uid://cawmqiuje5f2l" path="res://Assets/Textures/Placeholders/whisper_placeholder.png" id="4_4g5cr"]
 [ext_resource type="Texture2D" uid="uid://do5s2acgay1fm" path="res://Assets/Textures/Placeholders/foyer_placeholder.png" id="5_ckhy6"]
+[ext_resource type="Texture2D" uid="uid://cnbta5kwvvhm2" path="res://Assets/Textures/Placeholders/mask_placeholder_empty.png" id="6_ckhy6"]
 
 [sub_resource type="Animation" id="Animation_ckhy6"]
 length = 0.001
@@ -135,3 +136,8 @@ position = Vector2(575, 324)
 libraries = {
 &"": SubResource("AnimationLibrary_ckhy6")
 }
+
+[node name="Guest" type="Sprite2D" parent="."]
+position = Vector2(2101, 535)
+scale = Vector2(-0.226895, 0.250212)
+texture = ExtResource("6_ckhy6")
