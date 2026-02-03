@@ -40,6 +40,8 @@ func gen_rumor_match(feature, feature2):
 	genned += feature2 + "."
 	return genned
 
+func gen_no_rumor():
+	return mask_dialogue["no_rumors"].pick_random()
 
 var mask_dialogue = {
 	"describe_reason_prelude":[

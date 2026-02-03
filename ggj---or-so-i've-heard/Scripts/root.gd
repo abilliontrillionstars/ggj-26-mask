@@ -40,8 +40,6 @@ func _ready() -> void:
 	print("POI IS: ", cur_POI.mask)
 	# generate a list of rumors that together describe the POI 
 	gen_all_hints(cur_POI.mask, 4)
-	for hint in hints_queue:
-		print(hint)
 	
 	
 func _process(delta: float) -> void:
@@ -128,9 +126,9 @@ func gen_all_hints(poi_mask: Dictionary[String, String], steps: int):
 			# if it's too high, it's not very helpful
 			# with one hint, 7 is fine, then about 5, then 3, then 1
 			var merged = merge_hints(hints_queue)
-			#var merged_desc = omni_describes(merged[0], merged[1], merged[2],merged[3])
+			var merged_desc = omni_describes(merged[0], merged[1], merged[2],merged[3])
 			print("MERGED HINTS: ", merged)
-			#print("this describes ", merged_desc, " guests.")
+			print("this describes ", merged_desc, " guests.")
 			
 			hints_queue.append(hint)
 			break
@@ -207,7 +205,7 @@ func unique_describes() -> int:
 			else:
 				so_far += 1
 	return so_far
-func omni_describes(mask, not_mask: Array[String], similar_guests: Array[Vector2], color_matches: Array[String]) -> int:
+func omni_describes(mask, not_mask, similar_guests, color_matches) -> int:
 	"given any set of hints, returns how many guests they could refer to."
 	# each element of similar_guests is a Vec2(guest_num, amount_similar)
 	var so_far = 0
@@ -255,3 +253,12 @@ func omni_describes(mask, not_mask: Array[String], similar_guests: Array[Vector2
 		#	continue
 		so_far += 1
 	return so_far
+
+func on_guest_pressed(guest):
+	switch_room()
+	if guest.rumors != []:
+		dialogue_box.roll_text("Rumors?")
+		dialogue_box.roll_text(guest.rumors.pop_front())
+	else:
+		dialogue_box.roll_text("Rumors?")
+		dialogue_box.queue_text(rumors.gen_no_rumor())

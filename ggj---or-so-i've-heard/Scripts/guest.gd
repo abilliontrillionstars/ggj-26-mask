@@ -31,15 +31,20 @@ func _ready() -> void:
 		var colors = mask_data["colors"].keys()
 		var color: String = colors[randi()%len(colors)]
 		self.mask[feature] = color
+		# do sprite config stuff based on mask deets
 		var as_vec = mask_data["colors"][color].split(",")
 		as_vec = Color(int(as_vec[0]), int(as_vec[1]), int(as_vec[2]))
 		self.find_child(feature).visible = true
 		self.find_child(feature).modulate = as_vec
-	# do sprite config stuff based on mask deets
+		# button shit
+		$Button.pressed.connect(self.button_press)
 
 func _process(delta: float) -> void:
 	if self.rumors != []:
 		$DialogueIndicator.visible = true
 	else:
 		$DialogueIndicator.visible = false
-		
+
+func button_press():
+	$/root/root.on_guest_pressed(self)
+	
