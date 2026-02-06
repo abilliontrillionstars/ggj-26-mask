@@ -59,6 +59,7 @@ func _process(delta: float) -> void:
 	var dir = Vector2(sin(t), cos(t)) * 10
 	self.position += dir * (self.motion * delta)
 	var screen: Sprite2D = $/root/root/ScreenFoyer/Room/Foyer
+	self.rotation = sin(t + self.motion) / 5 
 
 func button_press():
 	$/root/root.on_guest_pressed(self)

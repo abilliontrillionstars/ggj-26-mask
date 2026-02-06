@@ -52,12 +52,9 @@ func _ready() -> void:
 	num_desc = not_mask_describes("centre")
 	dialogue_box.queue_text("No centrepiece... that describes "+str(num_desc)+" guests.")
 	
-	dialogue_box.queue_text(rumors.gen_rumor_similar(3))
-	num_desc = similar_describes($Guest.mask, 3)
-	dialogue_box.queue_text("Three similarities to mine... that describes "+str(num_desc)+" guests.")
-	
-	
-
+	dialogue_box.queue_text(rumors.gen_rumor_similar(2))
+	num_desc = similar_describes($Guest.mask, 2)
+	dialogue_box.queue_text("Two similarities to mine... that describes "+str(num_desc)+" guests.")
 func _process(delta: float) -> void:
 	# run game manager
 	
@@ -92,63 +89,64 @@ func gen_all_hints(poi_mask: Dictionary[String, String], steps: int):
 	"pregenerates all the rumors to one POI."
 	for i in range(5,0,-1):
 		# generate a true statement about the POI.
-		while true:
-			# consider how many guests a rumor refers to
-			var num_desc = 0
-			var hint
-			var type = randi()%100
-			if type < 40: # positive hint
-				hint = {}
-				var feature = poi_mask.keys().pick_random()
-				hint[feature] = poi_mask[feature]
-				hint = [hint, [], [], []]
-			elif type >= 40 and type < 65: # negative hint
-				var feats = cur_POI.mask_data["decor"]
-				for feat in feats:
-					if feat not in cur_POI.mask.keys():
-						hint = feat
-				# a mask might have all five. this makes the 
-				# other hints more useful
-				if hint == null: continue
-				hint = [{}, [hint], [], []]
-			elif type >= 65 and type < 80: # similarity hint
-				print("attempting similarity hint")
-				var guest = guest_list.pick_random()
-				var n = guest_get_similar(guest.mask, cur_POI.mask)
-				for j in range(10000):
+		var hint = gen_hint(poi_mask)
+		var merged = merge_hints(hints_queue)
+		var merged_desc = omni_describes(merged[0], merged[1], merged[2],merged[3])
+		print("MERGED HINTS: ", merged)
+		print("this describes ", merged_desc, " guests.")
+		hints_queue.append(hint)
+func gen_hint(poi_mask: Dictionary[String, String]):
+	# consider how many guests a rumor refers to
+	var num_desc = 0
+	var hint
+	while true:
+		var type = randi()%100
+		if type < 40: # positive hint
+			hint = {}
+			var feature = poi_mask.keys().pick_random()
+			hint[feature] = poi_mask[feature]
+			hint = [hint, [], [], []]
+		elif type >= 40 and type < 65: # negative hint
+			var feats = cur_POI.mask_data["decor"]
+			for feat in feats:
+				if feat not in cur_POI.mask.keys():
+					hint = feat
+			# a mask might have all five. this makes the 
+			# other hints more useful
+			if hint == null: continue
+			hint = [{}, [hint], [], []]
+		elif type >= 65 and type < 80: # similarity hint
+			print("attempting similarity hint")
+			var guest = guest_list.pick_random()
+			var n = guest_get_similar(guest.mask, cur_POI.mask)
+			for j in range(10000):
+				guest = guest_list.pick_random()
+				while guest == cur_POI:
 					guest = guest_list.pick_random()
-					while guest == cur_POI:
-						guest = guest_list.pick_random()
-					n = guest_get_similar(guest.mask, cur_POI.mask)
-					if n > 1: break
-				# try for n>1 but settle for 1 or even 0
-				hint = [{}, [], [Vector2(guest_list.find(guest), n)], []]
-				guest.rumors.append(rumors.gen_rumor_similar(n))
-			else: # type >= 80:  # color match hint
-				var seen_colors = []
-				for feat in cur_POI.mask:
-					var color = cur_POI.mask[feat]
-					for other in cur_POI.mask:
-						if feat == other:
-							continue
-						if color == cur_POI.mask[other]:
-							hint = [feat, other]
-							break
-				if hint == null: continue
-				hint = [{}, [], [], hint]
-			# if that's 1, it gives it away
-			if num_desc == 1: continue
-			if hint in hints_queue: continue
-			# if it's too high, it's not very helpful
-			# with one hint, 7 is fine, then about 5, then 3, then 1
-			var merged = merge_hints(hints_queue)
-			var merged_desc = omni_describes(merged[0], merged[1], merged[2],merged[3])
-			print("MERGED HINTS: ", merged)
-			print("this describes ", merged_desc, " guests.")
-			
-			hints_queue.append(hint)
-			break
-	print("done")
+				n = guest_get_similar(guest.mask, cur_POI.mask)
+				if n > 1: break
+			# try for n>1 but settle for 1 or even 0
+			hint = [{}, [], [Vector2(guest_list.find(guest), n)], []]
+			guest.rumors.append(rumors.gen_rumor_similar(n))
+		else: # type >= 80:  # color match hint
+			var seen_colors = []
+			for feat in cur_POI.mask:
+				var color = cur_POI.mask[feat]
+				for other in cur_POI.mask:
+					if feat == other:
+						continue
+					if color == cur_POI.mask[other]:
+						hint = [feat, other]
+						break
+			if hint == null: continue
+			hint = [{}, [], [], hint]
+		# if that's 1, it gives it away
+		if num_desc == 1: continue
+		if hint in hints_queue: continue
+		# if it's too high, it's not very helpful
+		# with one hint, 7 is fine, then about 5, then 3, then 1
+		break
+	return hint
 
 func merge_hints(list):
 	var merged = [{}, [], [], []]

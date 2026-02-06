@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://b20olpglgihnd" path="res://Assets/Textures/sequins.svg" id="5_pt87w"]
 
 [node name="Guest" type="Sprite2D"]
-position = Vector2(10, 0)
+position = Vector2(1.13687e-13, 0)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("1_5o2dd")
 script = ExtResource("2_a8vl4")
