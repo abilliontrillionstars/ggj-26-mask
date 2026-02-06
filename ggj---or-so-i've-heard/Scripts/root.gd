@@ -8,8 +8,8 @@ var cur_room = "rumor"
 
 # generated when a POI is revealed.
 var hints_queue = []
-# the hints that the player has been given. 
-# determines how close they are to solving the POI  
+# the hints that the player has been given.
+# determines how close they are to solving the POI
 var hints_given = []
 
 
@@ -41,7 +41,23 @@ func _ready() -> void:
 	# generate a list of rumors that together describe the POI 
 	gen_all_hints(cur_POI.mask, 4)
 	
+	dialogue_box.queue_text("Rumors? Hmm...")
+	dialogue_box.queue_text(rumors.gen_rumor_poi("thief"))
 	
+	dialogue_box.queue_text(rumors.gen_rumor_positive("stitches", "emerald"))
+	var num_desc = mask_describes({"stitches": "emerald"})
+	dialogue_box.queue_text("Emerald stitches... that describes "+str(num_desc)+" guests.")
+	
+	dialogue_box.queue_text(rumors.gen_rumor_negative("centre"))
+	num_desc = not_mask_describes("centre")
+	dialogue_box.queue_text("No centrepiece... that describes "+str(num_desc)+" guests.")
+	
+	dialogue_box.queue_text(rumors.gen_rumor_similar(3))
+	num_desc = similar_describes($Guest.mask, 3)
+	dialogue_box.queue_text("Three similarities to mine... that describes "+str(num_desc)+" guests.")
+	
+	
+
 func _process(delta: float) -> void:
 	# run game manager
 	
