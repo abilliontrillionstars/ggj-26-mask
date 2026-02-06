@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://b20olpglgihnd" path="res://Assets/Textures/sequins.svg" id="5_pt87w"]
 
 [node name="Guest" type="Sprite2D"]
+position = Vector2(10, 0)
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("1_5o2dd")
 script = ExtResource("2_a8vl4")
@@ -26,6 +27,7 @@ texture = ExtResource("4_u8k8w")
 
 [node name="crest" type="Sprite2D" parent="."]
 visible = false
+show_behind_parent = true
 texture = ExtResource("5_2xqqp")
 
 [node name="rhinestones" type="Sprite2D" parent="."]

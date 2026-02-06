@@ -4,18 +4,19 @@ var mask_data = {
 	"decor": ["crest", "rhinestones", "tears", "stitches", "centre"],
 	"colors": {
 		"silver":"255,255,255",
-		"ruby":"255,0,0",
-		"sapphire":"0,0,255",
-		"emerald":"0,255,0",
-		"amethyst":"255,0,255",
-		"aquamarine":"0,255,255",
-		"topaz":"255,255,0",
-		"onyx":"25,25,25"
+		"ruby":"138,23,48",
+		"sapphire":"31,66,161",
+		"emerald":"0,199,47",
+		"amethyst":"164,55,212",
+		"aquamarine":"39,200,221",
+		"topaz":"208,181,26",
+		"onyx":"30,30,30"
 	}
 }
 
 # randomly genned upon instantiation
 var mask: Dictionary[String, String] = {}
+var motion
 
 # set by the game manager
 var rumors: Array[String] = []
@@ -27,13 +28,20 @@ func _ready() -> void:
 		feats += 1 # and rarely, 5
 	feats = mask_data["decor"].slice(0, feats+1)
 	
+	$crest.show_behind_parent = true
+	var choices = []
+	for i in range(100):
+		choices.append(randf_range(0.3,7.5))
+	self.motion = choices.pick_random()
+	if randi()%2 == 0: self.motion = -self.motion
+
 	for feature in feats:
 		var colors = mask_data["colors"].keys()
 		var color: String = colors[randi()%len(colors)]
 		self.mask[feature] = color
 		# do sprite config stuff based on mask deets
 		var as_vec = mask_data["colors"][color].split(",")
-		as_vec = Color(int(as_vec[0]), int(as_vec[1]), int(as_vec[2]))
+		as_vec = Color(int(as_vec[0])/255.0, int(as_vec[1])/255.0, int(as_vec[2])/255.0)
 		self.find_child(feature).visible = true
 		self.find_child(feature).modulate = as_vec
 		# button shit
@@ -44,6 +52,13 @@ func _process(delta: float) -> void:
 		$DialogueIndicator.visible = true
 	else:
 		$DialogueIndicator.visible = false
+	# moving around the room
+	if self == $/root/root/Guest: return
+	
+	var t = Time.get_ticks_msec() / 1000.0
+	var dir = Vector2(sin(t), cos(t)) * 10
+	self.position += dir * (self.motion * delta)
+	var screen: Sprite2D = $/root/root/ScreenFoyer/Room/Foyer
 
 func button_press():
 	$/root/root.on_guest_pressed(self)
