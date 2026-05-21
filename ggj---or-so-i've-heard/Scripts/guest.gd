@@ -58,7 +58,6 @@ func _process(delta: float) -> void:
 	var t = Time.get_ticks_msec() / 1000.0
 	var dir = Vector2(sin(t), cos(t)) * 10
 	self.position += dir * (self.motion * delta)
-	var screen: Sprite2D = $/root/root/ScreenFoyer/Room/Foyer
 	self.rotation = sin(t + self.motion) / 5 
 
 func button_press():
