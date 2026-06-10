@@ -117,7 +117,7 @@ var mask_dialogue = {
 	],
 	"no_rumors":[
 		"Sorry, friend. I've not anything for you.",
-		"I haven't heard anything...",
+		"I haven't heard anything... though I wish you luck in your search.",
 		"Oh, I'm not one to listen. You'll find someone else, I know it.",
 		"Hmm... well, they certainly wore a mask. Does that help?"
 	]

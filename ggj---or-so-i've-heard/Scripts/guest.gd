@@ -20,22 +20,27 @@ var motion
 
 # set by the game manager
 var rumors: Array[String] = []
+var moving: bool = true
 
 func _ready() -> void:
+	# pick features randomly
 	mask_data["decor"].shuffle()
-	var feats = randi()%2 +2 # 2-4
+	var n = randi()%2 +2 # 2-4
 	if randi()% 7 == 0:
-		feats += 1 # and rarely, 5
-	feats = mask_data["decor"].slice(0, feats+1)
+		n += 1 # and rarely, 5
+	#pick the first n of the shuffled list
+	var feats = mask_data["decor"].slice(0, n+1)
 	
-	$crest.show_behind_parent = true
+	# make a list of random directions within a range 
 	var choices = []
 	for i in range(100):
 		choices.append(randf_range(0.3,7.5))
+	# then pick one
 	self.motion = choices.pick_random()
-	if randi()%2 == 0: self.motion = -self.motion
+	if randi()%2 == 0: self.motion *= -1.0
 
 	for feature in feats:
+		# decide a color for the mask feature
 		var colors = mask_data["colors"].keys()
 		var color: String = colors[randi()%len(colors)]
 		self.mask[feature] = color
@@ -54,6 +59,7 @@ func _process(delta: float) -> void:
 		$DialogueIndicator.visible = false
 	# moving around the room
 	if self == $/root/root/Guest: return
+	if not moving: return
 	
 	var t = Time.get_ticks_msec() / 1000.0
 	var dir = Vector2(sin(t), cos(t)) * 10

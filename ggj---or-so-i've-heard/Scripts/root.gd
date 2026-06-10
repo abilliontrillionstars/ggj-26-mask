@@ -35,6 +35,7 @@ func _ready() -> void:
 		$ScreenFoyer/Room.add_child(guest)
 		guest_list.append(guest)
 		guest.position += Vector2(randi_range(-400,400),randi_range(-200, 200))
+		guest.scale *= 0.85
 	# pick a POI
 	cur_POI = guest_list.pick_random()
 	print("POI IS: ", cur_POI.mask)
@@ -57,7 +58,8 @@ func _ready() -> void:
 	#dialogue_box.queue_text("Two similarities to mine... that describes "+str(num_desc)+" guests.")
 func _process(_delta: float) -> void:
 	# run game manager
-	
+	if Input.is_action_just_pressed("toggle guest moving"):
+			toggle_guest_moving()
 	# run dialog that explains first POI
 	# after dialogue is empty, prompt "or so I hear..."
 	# and show button to move to foyer
@@ -84,6 +86,9 @@ func switch_room() -> void:
 	else:
 		camera_anims.play_backwards("to_foyer")
 		cur_room = "rumor"
+func toggle_guest_moving() -> void:
+	for guest in guest_list:
+		guest.moving = not guest.moving
 
 func gen_all_hints(poi_mask: Dictionary[String, String]):
 	"pregenerates all the rumors to one POI."
@@ -100,13 +105,13 @@ func gen_hint(poi_mask: Dictionary[String, String]):
 	var num_desc = 0
 	var hint
 	while true:
-		var type = randi()%100
-		if type < 40: # positive hint
+		var roll = randi()%100
+		if roll < 40: # positive hint
 			hint = {}
 			var feature = poi_mask.keys().pick_random()
 			hint[feature] = poi_mask[feature]
 			hint = [hint, [], [], []]
-		elif type >= 40 and type < 65: # negative hint
+		elif roll >= 40 and roll < 65: # negative hint
 			for feat in poi_mask:
 				if feat not in poi_mask.keys():
 					hint = feat
@@ -114,19 +119,19 @@ func gen_hint(poi_mask: Dictionary[String, String]):
 			# other hints more useful
 			if hint == null: continue
 			hint = [{}, [hint], [], []]
-		elif type >= 65 and type < 80: # similarity hint
-			var guest = guest_list.pick_random()
-			var n = guest_get_similar(guest.mask, poi_mask)
-			for j in range(10000):
-				guest = guest_list.pick_random()
-				while guest == cur_POI:
-					guest = guest_list.pick_random()
-				n = guest_get_similar(guest.mask, poi_mask)
-				if n > 1: break
+		elif roll >= 65 and roll < 80: # similarity hint
+			var guest
+			var n
+			for other in guest_list:
+				if other.mask == poi_mask: continue
+				n = guest_get_similar(other.mask, poi_mask)
+				if n > 1: 
+					guest = other
+					break
 			# try for n>1 but settle for 1 or even 0
 			hint = [{}, [], [Vector2(guest_list.find(guest), n)], []]
 			guest.rumors.append(rumors.gen_rumor_similar(n))
-		else: # type >= 80:  # color match hint
+		else: # roll >= 80:  # color match hint
 			var seen_colors = {}
 			# count matching colors
 			for feat in poi_mask:
@@ -178,6 +183,9 @@ func guest_get_similar(mask, other) -> int:
 			# check for a color match
 			if mask[feature] == other[feature]:
 				so_far += 1
+	print(mask)
+	print(other)
+	print(so_far)
 	return so_far
 
 func mask_describes(mask) -> int:
@@ -255,3 +263,15 @@ func on_guest_pressed(guest):
 	else:
 		dialogue_box.roll_text("Rumors?")
 		dialogue_box.queue_text(rumors.gen_no_rumor())
+	# copy the guest's mask details to the rumor screen
+	$Guest/centre.visible = guest.find_child("centre").visible
+	$Guest/centre.modulate = guest.find_child("centre").modulate
+	$Guest/tears.visible = guest.find_child("tears").visible
+	$Guest/tears.modulate = guest.find_child("tears").modulate
+	$Guest/crest.visible = guest.find_child("crest").visible
+	$Guest/crest.modulate = guest.find_child("crest").modulate
+	$Guest/rhinestones.visible = guest.find_child("rhinestones").visible
+	$Guest/rhinestones.modulate = guest.find_child("rhinestones").modulate
+	$Guest/stitches.visible = guest.find_child("stitches").visible
+	$Guest/stitches.modulate = guest.find_child("stitches").modulate
+	
