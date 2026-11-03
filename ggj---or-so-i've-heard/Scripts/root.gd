@@ -1,19 +1,26 @@
 extends Node2D
 # demo, practice, or time attack
-var MODE = "demo"
+var MODE = "none"
 var guest_scene = preload("res://Scenes/guest.tscn")
 var guest_list: Array[Guest] = []
 var cur_POI
 var cur_room = "rumor"
 
+### TODO NOTE
+## add subsections of the screen to zoom into
+## - make a hint type to tell which zone the POI is in
+## - means more guests, hints are more valuable
+## - also means more viable similarity hints
+## rework rumor screen
+## - animate mask approaching, moving to center of screen
+## - dialogue box instead fades in, position is constant
 
-@onready var dialogue_box = $ScreenRumor/DialogueRumor
-@onready var rumors = $ScreenRumor/DialogueRumor/RumorContainer
+@onready var dialogue_box = $RumorManager/DialogueBox
+@onready var rumors = $RumorManager
 
 func _ready() -> void:
 	# start game manager
-	$ScreenRumor/FoyerButton.pressed.connect(self.switch_room)
-	$ScreenFoyer/RumorButton.pressed.connect(self.switch_room)
+	
 	# generate list of masks.
 	for i in range(25):
 		var guest
@@ -26,9 +33,9 @@ func _ready() -> void:
 					unique = false
 			if not unique: continue
 			else: break
-		$ScreenFoyer/Room.add_child(guest)
+		$GuestManager/StairwellZone.add_child(guest)
 		guest_list.append(guest)
-		guest.position += Vector2(randi_range(-400,400),randi_range(-200, 200))
+		guest.global_position = $GuestManager.global_position + Vector2(randi_range(-400,400),randi_range(-200, 200))
 		guest.scale *= 0.85
 	# send that to the hint manager
 	$HintManager.guest_list = guest_list
@@ -58,17 +65,6 @@ func _process(_delta: float) -> void:
 
 	pass
  
-func switch_room() -> void:
-	var camera_anims: AnimationPlayer = $Camera2D/CameraPivot
-	$/root/root/RoomButtonPivot.play_backwards("appear")
-	$ScreenRumor/DialogueRumor/NextButton.disabled = false
-	$ScreenFoyer/DialogueGuest/NextButton.disabled = false
-	if cur_room == "rumor":
-		camera_anims.play("to_foyer")
-		cur_room = "foyer"
-	else:
-		camera_anims.play_backwards("to_foyer")
-		cur_room = "rumor"
 func toggle_guest_moving() -> void:
 	for guest in guest_list:
 		guest.moving = not guest.moving
@@ -96,21 +92,12 @@ func roll_demo_rumors():
 		dialogue_box.queue_text("Hm, wait, that's not right... my memory must have failed me.")
 
 func on_guest_pressed(guest):
-	switch_room()
+	# trigger the animation to 
+	# float to the center of the screen
+	# enable the dialogue box
 	if guest.rumors != []:
 		dialogue_box.roll_text("Rumors?")
 		dialogue_box.roll_text(guest.rumors.pop_front())
 	else:
 		dialogue_box.roll_text("Rumors?")
 		dialogue_box.queue_text(rumors.gen_no_rumor())
-	# copy the guest's mask details to the rumor screen
-	$Guest/centre.visible = guest.find_child("centre").visible
-	$Guest/centre.modulate = guest.find_child("centre").modulate
-	$Guest/tears.visible = guest.find_child("tears").visible
-	$Guest/tears.modulate = guest.find_child("tears").modulate
-	$Guest/crest.visible = guest.find_child("crest").visible
-	$Guest/crest.modulate = guest.find_child("crest").modulate
-	$Guest/rhinestones.visible = guest.find_child("rhinestones").visible
-	$Guest/rhinestones.modulate = guest.find_child("rhinestones").modulate
-	$Guest/stitches.visible = guest.find_child("stitches").visible
-	$Guest/stitches.modulate = guest.find_child("stitches").modulate
