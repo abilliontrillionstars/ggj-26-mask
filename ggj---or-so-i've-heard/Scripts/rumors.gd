@@ -56,7 +56,8 @@ var mask_dialogue = {
 		],
 		"thief":[
 			"stolen my necklace! I'd like your help finding the culprit and getting it back.",
-			"been stealing from the other guests. I've gotten permission to investigate, and you of course are the best person to help..."
+			"been stealing from the other guests. I've gotten permission to investigate, and you of course are the best person to help...",
+			"notified me of a thief among those dancing here tonight. I implore you to discern who it is."
 		],
 		"murder":[
 			"committed the cold-blooded killing of another guest."

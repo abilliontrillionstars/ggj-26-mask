@@ -1,3 +1,4 @@
+class_name Guest
 extends Sprite2D
 
 var mask_data = {
