@@ -4,7 +4,7 @@ extends RichTextLabel
 var typing_speed = 50
 var is_typing = false
 var text_queue = []
-
+var speaker: Guest
 
 func _ready() -> void:
 	# note to self: this looks deceptive but is fine.
@@ -13,13 +13,15 @@ func _ready() -> void:
 		# this _ready is called), making it safe here.
 	$NextButton.pressed.connect(self.next_text)
 
-	
 func next_text():
 	if not is_typing:
 		if len(text_queue) > 0:
 			roll_text(text_queue.pop_front())
 		else:
+			# end of dialogue
 			roll_text("Or so I hear...")
+			if speaker:
+				speaker.approach_state = -1
 func queue_text(t: String) -> void:
 	text_queue.append(t)
 func roll_text(t: String) -> void:
@@ -28,7 +30,7 @@ func roll_text(t: String) -> void:
 	# animate the text character by character
 	self.visible_characters = 0
 	self.text = t
-	for char in t:
+	for character in t:
 		self.visible_characters += 1
 		# no typing sound, I think
 		#AudioStreamPlayer

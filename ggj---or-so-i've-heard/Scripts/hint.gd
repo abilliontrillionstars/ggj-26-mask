@@ -137,7 +137,7 @@ func omni_describes(mask, not_mask, similar_guests, color_matches) -> int:
 	var so_far = 0
 	for guest in guest_list:
 		var does_describe = false
-
+		
 		# first, the raw mask details
 		for key in mask:
 			does_describe = true
@@ -148,7 +148,15 @@ func omni_describes(mask, not_mask, similar_guests, color_matches) -> int:
 				break
 		# every part of the merged hint must apply
 		if not does_describe: continue
-
+		
+		# second, the features lacked...
+		for feature in not_mask:
+			if feature in guest.mask:
+				does_describe = false
+				break
+		# every part of the merged hint must apply
+		if not does_describe: continue
+		
 		# next, the similar guests
 		for sim in similar_guests:
 			var other = guest_list[sim[0]].mask
@@ -158,13 +166,6 @@ func omni_describes(mask, not_mask, similar_guests, color_matches) -> int:
 		# every part of the merged hint must apply
 		if not does_describe: continue
 
-		# then, the features lacked...
-		for feature in not_mask:
-			if feature in guest.mask:
-				does_describe = false
-				break
-		# every part of the merged hint must apply
-		if not does_describe: continue
 
 		## next... color matches
 		#if len(color_matches) > 1:

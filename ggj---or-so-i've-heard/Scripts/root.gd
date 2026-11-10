@@ -19,24 +19,9 @@ var cur_room = "rumor"
 @onready var rumors = $RumorManager
 
 func _ready() -> void:
-	# start game manager
-	
+	## start game manager
 	# generate list of masks.
-	for i in range(25):
-		var guest
-		while true:
-			# make sure guests have unique masks overall
-			var unique = true
-			guest = guest_scene.instantiate()
-			for other in guest_list:
-				if other.mask == guest.mask:
-					unique = false
-			if not unique: continue
-			else: break
-		$GuestManager/StairwellZone.add_child(guest)
-		guest_list.append(guest)
-		guest.global_position = $GuestManager.global_position + Vector2(randi_range(-400,400),randi_range(-200, 200))
-		guest.scale *= 0.85
+	populate_guest_list()
 	# send that to the hint manager
 	$HintManager.guest_list = guest_list
 	$HintManager.rumor_manager = rumors
@@ -65,11 +50,26 @@ func _process(_delta: float) -> void:
 
 	pass
  
+func populate_guest_list() -> void:
+	for i in range(25):
+		var guest: Guest
+		while true:
+			# make sure guests have unique masks overall
+			var unique = true
+			guest = guest_scene.instantiate()
+			for other in guest_list:
+				if other.mask == guest.mask:
+					unique = false
+			if not unique: continue
+			else: break
+		$GuestManager/StairwellZone.add_child(guest)
+		guest_list.append(guest)
+		guest.global_position = $GuestManager.global_position + Vector2(randi_range(-400,400),randi_range(-200, 200))
+		guest.scale *= 0.15
 func toggle_guest_moving() -> void:
-	for guest in guest_list:
+	for guest: Guest in guest_list:
 		guest.moving = not guest.moving
-
-func roll_demo_rumors():
+func roll_demo_rumors() -> void:
 	dialogue_box.queue_text("Rumors? Hmm...")
 	dialogue_box.queue_text(rumors.gen_rumor_poi("thief"))
 	
@@ -91,10 +91,20 @@ func roll_demo_rumors():
 	if num_desc == 0:
 		dialogue_box.queue_text("Hm, wait, that's not right... my memory must have failed me.")
 
-func on_guest_pressed(guest):
-	# trigger the animation to 
-	# float to the center of the screen
-	# enable the dialogue box
+func on_guest_pressed(guest: Guest) -> void:
+	print("this is the server! a guest got pressed!")
+	# gamevar-dependent handling of approach animation
+	
+	for other in guest_list:
+		other.z_index = 0
+		# disable the guest's on-click behavior
+		other.get_child(-1).disabled = true
+	guest.z_index = 1
+	# animate the appearance of the dialogue box
+	
+	# then queue the dialogue
+	await guest.finished_approach
+	dialogue_box.speaker = guest
 	if guest.rumors != []:
 		dialogue_box.roll_text("Rumors?")
 		dialogue_box.roll_text(guest.rumors.pop_front())

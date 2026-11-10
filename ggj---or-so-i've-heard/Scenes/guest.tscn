@@ -10,7 +10,6 @@
 
 [node name="Guest" type="Sprite2D"]
 position = Vector2(1.13687e-13, 0)
-scale = Vector2(0.2, 0.2)
 texture = ExtResource("1_5o2dd")
 script = ExtResource("2_a8vl4")
 
@@ -53,3 +52,5 @@ offset_right = 330.0
 offset_bottom = 155.0
 button_mask = 7
 flat = true
+
+[connection signal="finished_approach" from="." to="." method="on_finished_approach"]
