@@ -14,6 +14,7 @@ var cur_room = "rumor"
 ## rework rumor screen
 ## - animate mask approaching, moving to center of screen
 ## - dialogue box instead fades in, position is constant
+## - maybe guest ends with a hint as to where to find the next rumor
 
 @onready var dialogue_box = $RumorManager/DialogueBox
 @onready var rumors = $RumorManager
@@ -91,19 +92,19 @@ func roll_demo_rumors() -> void:
 	if num_desc == 0:
 		dialogue_box.queue_text("Hm, wait, that's not right... my memory must have failed me.")
 
+# called by their respective event functions in guest.gd
+# these aren't connected by signal because guests are instanced
+# and so that they can happen sequentially timed (one calls other)
 func on_guest_pressed(guest: Guest) -> void:
-	print("this is the server! a guest got pressed!")
+	print("this is the server! a guest got pressed.")
 	# gamevar-dependent handling of approach animation
-	
 	for other in guest_list:
-		other.z_index = 0
 		# disable the guest's on-click behavior
 		other.get_child(-1).disabled = true
 	guest.z_index = 1
 	# animate the appearance of the dialogue box
 	
 	# then queue the dialogue
-	await guest.finished_approach
 	dialogue_box.speaker = guest
 	if guest.rumors != []:
 		dialogue_box.roll_text("Rumors?")
@@ -111,3 +112,8 @@ func on_guest_pressed(guest: Guest) -> void:
 	else:
 		dialogue_box.roll_text("Rumors?")
 		dialogue_box.queue_text(rumors.gen_no_rumor())
+func on_guest_left(source: Guest):
+	source.z_index = 0
+	for guest in guest_list:
+		# re-enable guest clicking
+		guest.get_child(-1).disabled = false

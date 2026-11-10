@@ -116,7 +116,7 @@ func guest_get_similar(mask, other) -> int:
 
 func mask_describes(mask) -> int:
 	return omni_describes(mask, [], [], [])
-func not_mask_describes(feature: String) -> int:	
+func not_mask_describes(feature: String) -> int:
 	return omni_describes({}, [feature], [], [])
 func similar_describes(mask, n) -> int:
 	# find the guest

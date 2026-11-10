@@ -17,11 +17,10 @@ func next_text():
 	if not is_typing:
 		if len(text_queue) > 0:
 			roll_text(text_queue.pop_front())
-		else:
-			# end of dialogue
+		elif speaker: # end of dialogue
 			roll_text("Or so I hear...")
-			if speaker:
-				speaker.approach_state = -1
+			speaker.approach_state = -1
+			speaker = null
 func queue_text(t: String) -> void:
 	text_queue.append(t)
 func roll_text(t: String) -> void:
