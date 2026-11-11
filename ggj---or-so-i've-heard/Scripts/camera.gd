@@ -8,6 +8,11 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	# monkeypatch child nodes staying onscreen
 	self.scale = Vector2(1.0,1.0)/self.zoom
+	$"../GuestManager/NEButton".disabled = view!=viewState.outer
+	$"../GuestManager/SEButton".disabled = view!=viewState.outer
+	$"../GuestManager/SWButton".disabled = view!=viewState.outer
+	$"../GuestManager/NWButton".disabled = view!=viewState.outer
+	$"../GuestManager/CenterButton".disabled = view!=viewState.outer
 
 
 
@@ -44,3 +49,5 @@ func _on_back_button_pressed() -> void:
 			$CameraAnimator.play_backwards("to_nw")
 		elif view == viewState.center:
 			$CameraAnimator.play_backwards("to_center")
+		await $CameraAnimator.animation_finished
+		view = viewState.outer

@@ -50,7 +50,10 @@ func _process(_delta: float) -> void:
 		# “Any gossip?” vs “I’ve been looking for you”
 	# Get next rumor (alternatively, accuse the POI)
 
-	pass
+	for guest in guest_list:
+		# can't click guests while not zoomed into an area, or while someone is speaking
+		guest.get_child(-1).disabled = $Camera2D.view==$Camera2D.viewState.outer or $Camera2D/DialogueBox.speaker
+	$Camera2D/BackButton.disabled = $Camera2D/DialogueBox.speaker
  
 func populate_guest_list() -> void:
 	for zone in range(5):
@@ -116,6 +119,6 @@ func on_guest_pressed(guest: Guest) -> void:
 		dialogue_box.queue_text(rumors.gen_no_rumor())
 func on_guest_left(source: Guest):
 	source.z_index = 0
-	for guest in guest_list:
-		# re-enable guest clicking
-		guest.get_child(-1).disabled = false
+	#for guest in guest_list:
+		## re-enable guest clicking
+		#guest.get_child(-1).disabled = false
