@@ -45,6 +45,13 @@ position = Vector2(-1.67638e-08, -340)
 rotation = -3.1399
 texture = ExtResource("3_a8vl4")
 
+[node name="POIIndicator" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.4)
+z_index = -1
+scale = Vector2(1.25, 1.25)
+texture = ExtResource("1_5o2dd")
+
 [node name="Button" type="Button" parent="."]
 offset_left = -330.0
 offset_top = -155.0

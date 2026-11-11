@@ -26,6 +26,10 @@ var approach_state: int = 0
 var approach_progress: float = 0
 var room_position: Vector2
 var room_scale: Vector2
+# debug helper
+var is_poi: bool = false
+
+@onready var camera: Camera2D = $/root/root/Camera2D
 
 func _ready() -> void:
 	populate_mask()
@@ -41,6 +45,7 @@ func _ready() -> void:
 	$Button.pressed.connect(self.button_press)
 func _process(delta: float) -> void:
 	$DialogueIndicator.visible = self.rumors != []
+	$POIIndicator.visible = self.is_poi
 	# handle approaching motion
 	if approach_state != 0:
 		handle_approaching(delta)
@@ -91,7 +96,7 @@ func handle_approaching(delta):
 		if approach_progress > 1.0:
 			approach_progress = 1.0
 		# tween position
-		self.global_position = lerp(room_position, get_viewport_rect().get_center(), clampf(approach_progress, 0.0, 1.0))
+		self.global_position = lerp(room_position, camera.get_screen_center_position(), clampf(approach_progress, 0.0, 1.0))
 		# tween rotation
 		self.rotation = lerp(self.rotation, 0.0, approach_progress)
 		# tween scale
@@ -104,7 +109,7 @@ func handle_approaching(delta):
 		if approach_progress < 0.0:
 			approach_progress = 0.0
 		# tween position
-		self.global_position = lerp(room_position, get_viewport_rect().get_center(), clampf(approach_progress, 0.0, 1.0))
+		self.global_position = lerp(room_position, camera.get_screen_center_position(), clampf(approach_progress, 0.0, 1.0))
 		# tween rotation
 		self.rotation = lerp(self.rotation, 0.0, approach_progress)
 		# tween scale

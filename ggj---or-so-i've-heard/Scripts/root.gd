@@ -3,7 +3,7 @@ extends Node2D
 var MODE = "none"
 var guest_scene = preload("res://Scenes/guest.tscn")
 var guest_list: Array[Guest] = []
-var cur_POI
+var cur_POI: Guest
 var cur_room = "rumor"
 
 ### TODO NOTE
@@ -16,7 +16,7 @@ var cur_room = "rumor"
 ## - dialogue box instead fades in, position is constant
 ## - maybe guest ends with a hint as to where to find the next rumor
 
-@onready var dialogue_box = $RumorManager/DialogueBox
+@onready var dialogue_box = $Camera2D/DialogueBox
 @onready var rumors = $RumorManager
 
 func _ready() -> void:
@@ -29,6 +29,7 @@ func _ready() -> void:
 	
 	# pick a POI
 	cur_POI = guest_list.pick_random()
+	cur_POI.is_poi = true
 	print("POI IS: ", cur_POI.mask)
 	# generate a list of rumors that together describe the POI 
 	if MODE == "demo": roll_demo_rumors()
@@ -52,21 +53,22 @@ func _process(_delta: float) -> void:
 	pass
  
 func populate_guest_list() -> void:
-	for i in range(25):
-		var guest: Guest
-		while true:
-			# make sure guests have unique masks overall
-			var unique = true
-			guest = guest_scene.instantiate()
-			for other in guest_list:
-				if other.mask == guest.mask:
-					unique = false
-			if not unique: continue
-			else: break
-		$GuestManager/StairwellZone.add_child(guest)
-		guest_list.append(guest)
-		guest.global_position = $GuestManager.global_position + Vector2(randi_range(-400,400),randi_range(-200, 200))
-		guest.scale *= 0.15
+	for zone in range(5):
+		for i in range(25):
+			var guest: Guest
+			while true:
+				# make sure guests have unique masks overall
+				var unique = true
+				guest = guest_scene.instantiate()
+				for other in guest_list:
+					if other.mask == guest.mask:
+						unique = false
+				if not unique: continue
+				else: break
+			$GuestManager.get_child(zone*2 + 1).add_child(guest)
+			guest_list.append(guest)
+			guest.position += Vector2(randi_range(-400,400),randi_range(-200, 200))
+			guest.scale *= 0.15
 func toggle_guest_moving() -> void:
 	for guest: Guest in guest_list:
 		guest.moving = not guest.moving
