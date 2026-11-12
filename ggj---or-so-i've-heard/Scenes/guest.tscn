@@ -38,14 +38,14 @@ texture = ExtResource("5_pt87w")
 visible = false
 texture = ExtResource("5_hgltn")
 
-[node name="DialogueIndicator" type="Sprite2D" parent="."]
+[node name="POIIndicator" type="Sprite2D" parent="."]
 visible = false
 modulate = Color(0, 0, 0, 1)
 position = Vector2(-1.67638e-08, -340)
 rotation = -3.1399
 texture = ExtResource("3_a8vl4")
 
-[node name="POIIndicator" type="Sprite2D" parent="."]
+[node name="DialogueIndicator" type="Sprite2D" parent="."]
 visible = false
 modulate = Color(1, 1, 1, 0.4)
 z_index = -1

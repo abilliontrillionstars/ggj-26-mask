@@ -56,6 +56,48 @@ tracks/3/keys = {
 "values": [Vector2(578, 325)]
 }
 
+[sub_resource type="Animation" id="Animation_a6f85"]
+resource_name = "to_center"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:zoom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(3.135, 3.135)]
+}
+
+[sub_resource type="Animation" id="Animation_r3lo5"]
+resource_name = "to_ne"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:zoom")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(1, 1), Vector2(3.13, 3.13)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(578, 325), Vector2(953, 122)]
+}
+
 [sub_resource type="Animation" id="Animation_dun2r"]
 resource_name = "to_ne"
 tracks/0/type = "value"
@@ -110,33 +152,6 @@ tracks/1/keys = {
 "values": [Vector2(578, 325), Vector2(954, 527)]
 }
 
-[sub_resource type="Animation" id="Animation_r3lo5"]
-resource_name = "to_ne"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:zoom")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(1, 1), Vector2(3.13, 3.13)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath(".:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(578, 325), Vector2(953, 122)]
-}
-
 [sub_resource type="Animation" id="Animation_8fnbn"]
 resource_name = "to_sw"
 tracks/0/type = "value"
@@ -162,21 +177,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector2(578, 325), Vector2(187, 531)]
-}
-
-[sub_resource type="Animation" id="Animation_a6f85"]
-resource_name = "to_center"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:zoom")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Vector2(1, 1), Vector2(3.135, 3.135)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ckhy6"]
@@ -287,6 +287,7 @@ offset_bottom = -25.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.8918918, 1.5494468)
+disabled = true
 text = "Dialogue"
 
 [node name="BackButton" type="Button" parent="Camera2D"]
@@ -301,6 +302,7 @@ offset_bottom = 264.0
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.8918918, 1.5494468)
+disabled = true
 text = "Zoom Out"
 
 [node name="CameraAnimator" type="AnimationPlayer" parent="Camera2D"]
@@ -320,3 +322,4 @@ texture = ExtResource("13_lwnbm")
 [connection signal="pressed" from="GuestManager/NWButton" to="Camera2D" method="_on_nw_button_pressed"]
 [connection signal="pressed" from="GuestManager/CenterButton" to="Camera2D" method="_on_center_button_pressed"]
 [connection signal="pressed" from="Camera2D/BackButton" to="Camera2D" method="_on_back_button_pressed"]
+[connection signal="animation_finished" from="Camera2D/CameraAnimator" to="." method="_on_camera_animator_animation_finished"]

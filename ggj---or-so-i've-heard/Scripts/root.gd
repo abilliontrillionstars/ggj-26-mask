@@ -46,15 +46,6 @@ func _process(_delta: float) -> void:
 		# “What have you heard?” vs “It’s you!”
 		# “Any gossip?” vs “I’ve been looking for you”
 	# Get next rumor (alternatively, accuse the POI)
-	
-	# TODO: make this event-based. it slows down the game when run on every process
-	for guest in guest_list:
-		# can't click guests while not zoomed into an area, or while someone is speaking
-		guest.get_child(-1).disabled = $Camera2D.view==$Camera2D.viewState.outer or $Camera2D/DialogueBox.speaker
-	# can't zoom out when we're already zoomed out, or while somebody is speaking
-	$Camera2D/BackButton.disabled = $Camera2D.view == $Camera2D.viewState.outer or $Camera2D/DialogueBox.speaker
-	# can't advance dialogue when no-one is speaking
-	$Camera2D/DialogueBox/NextButton.disabled = $Camera2D/DialogueBox.speaker == null
  
 func populate_guest_list() -> void:
 	for zone in range(5):
@@ -98,29 +89,41 @@ func roll_demo_rumors() -> void:
 	if num_desc == 0:
 		dialogue_box.queue_text("Hm, wait, that's not right... my memory must have failed me.")
 
-# called by their respective event functions in guest.gd
-# these aren't connected by signal because guests are instanced
-# and so that they can happen sequentially timed (one calls other)
 func on_guest_pressed(guest: Guest) -> void:
 	print("this is the server! a guest got pressed.")
+	$Camera2D/BackButton.disabled = true
 	# gamevar-dependent handling of approach animation
 	for other in guest_list:
 		# disable the guest's on-click behavior
 		other.get_child(-1).disabled = true
 	guest.z_index = 1
-	# animate the appearance of the dialogue box
-	
-	# then queue the dialogue
-	dialogue_box.speaker = guest
-	if guest.rumors != []:
+# called by their respective event functions in guest.gd
+# these aren't connected by signal because guests are instanced
+# and so that they can happen sequentially in time (one calls other)
+func on_guest_approached(source: Guest):
+	$Camera2D/DialogueBox.speaker = source
+	$Camera2D/DialogueBox/NextButton.disabled = false
+	# queue the dialogue
+	dialogue_box.speaker = source
+	if source.rumors != []:
 		dialogue_box.roll_text("Rumors?")
-		dialogue_box.roll_text(guest.rumors.pop_front())
+		dialogue_box.roll_text(source.rumors.pop_front())
 	else:
 		dialogue_box.roll_text("Rumors?")
 		dialogue_box.queue_text(rumors.gen_no_rumor())
 func on_guest_left(source: Guest):
 	source.z_index = 0
 	$Camera2D/DialogueBox.speaker = null
-	#for guest in guest_list:
-		## re-enable guest clicking
-		#guest.get_child(-1).disabled = false
+	$Camera2D/DialogueBox/NextButton.disabled = true
+	$Camera2D/BackButton.disabled = false
+	for guest in guest_list:
+		# re-enable guest clicking
+		guest.get_child(-1).disabled = false
+
+
+func _on_camera_animator_animation_finished(anim_name: StringName) -> void:
+	var oldState = $Camera2D.view
+	for guest in guest_list:
+		# re-enable guest clicking
+		guest.get_child(-1).disabled = oldState != $Camera2D.viewState.outer
+	#if $Camera2D/CameraAnimator.get_animation(anim_name):

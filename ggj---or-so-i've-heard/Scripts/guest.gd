@@ -43,6 +43,7 @@ func _ready() -> void:
 
 	# button shit
 	$Button.pressed.connect(self.button_press)
+	$Button.disabled = true
 func _process(delta: float) -> void:
 	$DialogueIndicator.visible = self.rumors != []
 	$POIIndicator.visible = self.is_poi
@@ -120,6 +121,8 @@ func handle_approaching(delta):
 func on_finished_approach(toggle: bool) -> void:
 	if toggle:
 		print("guest finished approach animation.")
+		# signal the game manager to do gamevar-dependent stuff
+		$/root/root.on_guest_approached(self)
 	else:
 		print("guest finished leaving animtation.")
 		self.moving = true
