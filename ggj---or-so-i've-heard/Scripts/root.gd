@@ -38,10 +38,7 @@ func _process(_delta: float) -> void:
 	# run game manager
 	if Input.is_action_just_pressed("toggle guest moving"):
 			toggle_guest_moving()
-	# run dialog that explains first POI
-	# after dialogue is empty, prompt "or so I hear..."
-	# and show button to move to foyer
-	
+	# run dialog that explains first POI	
 		# many masks to choose from
 		# Masks move around ambiently (like Find Luigi)
 	# Pick a new mask
@@ -49,11 +46,15 @@ func _process(_delta: float) -> void:
 		# “What have you heard?” vs “It’s you!”
 		# “Any gossip?” vs “I’ve been looking for you”
 	# Get next rumor (alternatively, accuse the POI)
-
+	
+	# TODO: make this event-based. it slows down the game when run on every process
 	for guest in guest_list:
 		# can't click guests while not zoomed into an area, or while someone is speaking
 		guest.get_child(-1).disabled = $Camera2D.view==$Camera2D.viewState.outer or $Camera2D/DialogueBox.speaker
-	$Camera2D/BackButton.disabled = $Camera2D/DialogueBox.speaker
+	# can't zoom out when we're already zoomed out, or while somebody is speaking
+	$Camera2D/BackButton.disabled = $Camera2D.view == $Camera2D.viewState.outer or $Camera2D/DialogueBox.speaker
+	# can't advance dialogue when no-one is speaking
+	$Camera2D/DialogueBox/NextButton.disabled = $Camera2D/DialogueBox.speaker == null
  
 func populate_guest_list() -> void:
 	for zone in range(5):
@@ -119,6 +120,7 @@ func on_guest_pressed(guest: Guest) -> void:
 		dialogue_box.queue_text(rumors.gen_no_rumor())
 func on_guest_left(source: Guest):
 	source.z_index = 0
+	$Camera2D/DialogueBox.speaker = null
 	#for guest in guest_list:
 		## re-enable guest clicking
 		#guest.get_child(-1).disabled = false
