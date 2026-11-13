@@ -12,31 +12,31 @@ func _on_ne_button_pressed() -> void:
 	$CameraAnimator.play("to_ne")
 	await $CameraAnimator.animation_finished
 	view = viewState.ne
-	$"../GuestManager/NEButton".disabled = view==viewState.outer
+	$"../GuestManager/NEButton".disabled = true
 	$BackButton.disabled = false
 func _on_se_button_pressed() -> void:
 	$CameraAnimator.play("to_se")
 	await $CameraAnimator.animation_finished
 	view = viewState.se
-	$"../GuestManager/SEButton".disabled = view!=viewState.outer
+	$"../GuestManager/SEButton".disabled = true
 	$BackButton.disabled = false
 func _on_sw_button_pressed() -> void:
 	$CameraAnimator.play("to_sw")
 	await $CameraAnimator.animation_finished
 	view = viewState.sw
-	$"../GuestManager/SWButton".disabled = view!=viewState.outer
+	$"../GuestManager/SWButton".disabled = true
 	$BackButton.disabled = false
 func _on_nw_button_pressed() -> void:
 	$CameraAnimator.play("to_nw")
 	await $CameraAnimator.animation_finished
 	view = viewState.nw
-	$"../GuestManager/NWButton".disabled = view!=viewState.outer
+	$"../GuestManager/NWButton".disabled = true
 	$BackButton.disabled = false
 func _on_center_button_pressed() -> void:
 	$CameraAnimator.play("to_center")
 	await $CameraAnimator.animation_finished
 	view = viewState.center
-	$"../GuestManager/CenterButton".disabled = view!=viewState.outer
+	$"../GuestManager/CenterButton".disabled = true
 	$BackButton.disabled = false
 
 func _on_back_button_pressed() -> void:
@@ -53,9 +53,9 @@ func _on_back_button_pressed() -> void:
 			$CameraAnimator.play_backwards("to_center")
 		await $CameraAnimator.animation_finished
 		view = viewState.outer
-		$"../GuestManager/NEButton".disabled = view!=viewState.outer
-		$"../GuestManager/SEButton".disabled = view!=viewState.outer
-		$"../GuestManager/SWButton".disabled = view!=viewState.outer
-		$"../GuestManager/NWButton".disabled = view!=viewState.outer
-		$"../GuestManager/CenterButton".disabled = view!=viewState.outer
+		$"../GuestManager/NEButton".disabled = false
+		$"../GuestManager/SEButton".disabled = false
+		$"../GuestManager/SWButton".disabled = false
+		$"../GuestManager/NWButton".disabled = false
+		$"../GuestManager/CenterButton".disabled = false
 		$BackButton.disabled = true

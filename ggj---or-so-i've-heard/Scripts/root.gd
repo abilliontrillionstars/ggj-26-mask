@@ -1,10 +1,9 @@
 extends Node2D
 # demo, practice, or time attack
-var MODE = "none"
+var MODE = "demo"
 var guest_scene = preload("res://Scenes/guest.tscn")
 var guest_list: Array[Guest] = []
 var cur_POI: Guest
-var cur_room = "rumor"
 
 ### TODO NOTE
 ## add subsections of the screen to zoom into
@@ -12,8 +11,6 @@ var cur_room = "rumor"
 ## - means more guests, hints are more valuable
 ## - also means more viable similarity hints
 ## rework rumor screen
-## - animate mask approaching, moving to center of screen
-## - dialogue box instead fades in, position is constant
 ## - maybe guest ends with a hint as to where to find the next rumor
 
 @onready var dialogue_box = $Camera2D/DialogueBox
@@ -26,13 +23,13 @@ func _ready() -> void:
 	# send that to the hint manager
 	$HintManager.guest_list = guest_list
 	$HintManager.rumor_manager = rumors
-	
+
 	# pick a POI
 	cur_POI = guest_list.pick_random()
 	cur_POI.is_poi = true
 	print("POI IS: ", cur_POI.mask)
 	# generate a list of rumors that together describe the POI 
-	if MODE == "demo": roll_demo_rumors()
+	if MODE == "demo": gen_demo_rumors(cur_POI)
 	elif MODE == "practice": $HintManager.gen_all_hints(cur_POI.mask)
 func _process(_delta: float) -> void:
 	# run game manager
@@ -67,27 +64,27 @@ func populate_guest_list() -> void:
 func toggle_guest_moving() -> void:
 	for guest: Guest in guest_list:
 		guest.moving = not guest.moving
-func roll_demo_rumors() -> void:
-	dialogue_box.queue_text("Rumors? Hmm...")
-	dialogue_box.queue_text(rumors.gen_rumor_poi("thief"))
+func gen_demo_rumors(guest: Guest) -> void:
+	guest.rumors.append("Rumors? Hmm...")
+	guest.rumors.append(rumors.gen_rumor_poi("thief"))
 	
-	dialogue_box.queue_text(rumors.gen_rumor_positive("stitches", "emerald"))
-	var num_desc = $HintManager.omni_describes({"stitches": "emerald"}, [], [], [])
-	dialogue_box.queue_text("Emerald stitches... that describes "+str(num_desc)+" guests.")
+	guest.rumors.append(rumors.gen_rumor_positive("stitches", "emerald"))
+	var num_desc = $HintManager.mask_describes({"stitches": "emerald"})
+	guest.rumors.append("Emerald stitches... that describes "+str(num_desc)+" guests.")
 	if num_desc == 0:
-		dialogue_box.queue_text("Hm, wait, that's not right... my memory must have failed me.")
+		guest.rumors.append("Hm, wait, that's not right... my memory must have failed me.")
 	
-	dialogue_box.queue_text(rumors.gen_rumor_negative("centre"))
-	num_desc = $HintManager.omni_describes({}, ["centre"], [], [])
-	dialogue_box.queue_text("No centrepiece... that describes "+str(num_desc)+" guests.")
+	guest.rumors.append(rumors.gen_rumor_negative("centre"))
+	num_desc = $HintManager.not_mask_describes(["centre"])
+	guest.rumors.append("No centrepiece... that describes "+str(num_desc)+" guests.")
 	if num_desc == 0:
-		dialogue_box.queue_text("Hm, wait, that's not right... my memory must have failed me.")
+		guest.rumors.append("Hm, wait, that's not right... my memory must have failed me.")
 	
-	dialogue_box.queue_text(rumors.gen_rumor_similar(2))
-	num_desc = $HintManager.omni_describes({}, [], [ Vector2(guest_list.find(cur_POI), 2.0) ], [])
-	dialogue_box.queue_text("Two similarities to mine... that describes "+str(num_desc)+" guests.")
+	guest.rumors.append(rumors.gen_rumor_similar(2))
+	num_desc = $HintManager.similar_describes(cur_POI.mask, 2.0)
+	guest.rumors.append("Two similarities to mine... that describes "+str(num_desc)+" guests.")
 	if num_desc == 0:
-		dialogue_box.queue_text("Hm, wait, that's not right... my memory must have failed me.")
+		guest.rumors.append("Hm, wait, that's not right... my memory must have failed me.")
 
 func on_guest_pressed(guest: Guest) -> void:
 	print("this is the server! a guest got pressed.")
@@ -120,10 +117,9 @@ func on_guest_left(source: Guest):
 		# re-enable guest clicking
 		guest.get_child(-1).disabled = false
 
-
-func _on_camera_animator_animation_finished(anim_name: StringName) -> void:
+func _on_camera_animator_animation_finished(_anim_name: StringName) -> void:
 	var oldState = $Camera2D.view
+	if oldState == $Camera2D.viewState.outer:
+		print("moving into guest view")
 	for guest in guest_list:
-		# re-enable guest clicking
 		guest.get_child(-1).disabled = oldState != $Camera2D.viewState.outer
-	#if $Camera2D/CameraAnimator.get_animation(anim_name):

@@ -90,41 +90,31 @@ func populate_mask():
 		self.find_child(feature).visible = true
 		self.find_child(feature).modulate = as_vec
 
-signal finished_approach
 func handle_approaching(delta):
 	if approach_state == 1:
 		approach_progress += delta*2
 		if approach_progress > 1.0:
 			approach_progress = 1.0
-		# tween position
-		self.global_position = lerp(room_position, camera.get_screen_center_position(), clampf(approach_progress, 0.0, 1.0))
-		# tween rotation
-		self.rotation = lerp(self.rotation, 0.0, approach_progress)
-		# tween scale
-		self.scale = lerp(room_scale, room_scale*4, approach_progress)
-		if approach_progress == 1.0:
 			approach_state = 0
-			finished_approach.emit(true)
+			on_finished_approach(true)
 	elif approach_state == -1:
 		approach_progress -= delta*2
 		if approach_progress < 0.0:
 			approach_progress = 0.0
+			approach_state = 0
+			on_finished_approach(false)
+	
 		# tween position
 		self.global_position = lerp(room_position, camera.get_screen_center_position(), clampf(approach_progress, 0.0, 1.0))
 		# tween rotation
 		self.rotation = lerp(self.rotation, 0.0, approach_progress)
 		# tween scale
 		self.scale = lerp(room_scale, room_scale*4, approach_progress)
-		if approach_progress == 0.0:
-			approach_state = 0
-			finished_approach.emit(false)
 func on_finished_approach(toggle: bool) -> void:
 	if toggle:
-		print("guest finished approach animation.")
 		# signal the game manager to do gamevar-dependent stuff
 		$/root/root.on_guest_approached(self)
 	else:
-		print("guest finished leaving animtation.")
 		self.moving = true
 		# signal the game manager to do gamevar-dependent stuff
 		$/root/root.on_guest_left(self)
