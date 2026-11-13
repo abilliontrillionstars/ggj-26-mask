@@ -59,5 +59,3 @@ offset_right = 330.0
 offset_bottom = 155.0
 button_mask = 7
 flat = true
-
-[connection signal="finished_approach" from="." to="." method="on_finished_approach"]

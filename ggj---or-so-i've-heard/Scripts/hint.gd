@@ -109,15 +109,15 @@ func guest_get_similar(mask, other) -> int:
 			# check for a color match
 			if mask[feature] == other[feature]:
 				so_far += 1
-	print(mask)
-	print(other)
-	print(so_far)
+	#print(mask)
+	#print(other)
+	#print(so_far)
 	return so_far
 
 func mask_describes(mask) -> int:
 	return omni_describes(mask, [], [], [])
-func not_mask_describes(feature: String) -> int:
-	return omni_describes({}, [feature], [], [])
+func not_mask_describes(features: Array) -> int:
+	return omni_describes({}, features, [], [])
 func similar_describes(mask, n) -> int:
 	# find the guest
 	var g = null
@@ -136,11 +136,10 @@ func omni_describes(mask, not_mask, similar_guests, color_matches) -> int:
 	# each element of similar_guests is a Vec2(guest_num, amount_similar)
 	var so_far = 0
 	for guest in guest_list:
-		var does_describe = false
+		var does_describe = true
 		
 		# first, the raw mask details
 		for key in mask:
-			does_describe = true
 			# every detail present in the hint must be present in a 
 			# given guest for them to be counted as described by it
 			if not (key in guest.mask and mask[key] == guest.mask[key]):

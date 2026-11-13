@@ -59,7 +59,6 @@ func _process(delta: float) -> void:
 		self.rotation = sin(t + self.speed) / 5 
 
 func button_press():
-	print("this is guest! I got pressed! ... bars?")
 	# animate moving to center-screen
 	moving = false
 	room_position = self.global_position
@@ -104,12 +103,12 @@ func handle_approaching(delta):
 			approach_state = 0
 			on_finished_approach(false)
 	
-		# tween position
-		self.global_position = lerp(room_position, camera.get_screen_center_position(), clampf(approach_progress, 0.0, 1.0))
-		# tween rotation
-		self.rotation = lerp(self.rotation, 0.0, approach_progress)
-		# tween scale
-		self.scale = lerp(room_scale, room_scale*4, approach_progress)
+	# tween position
+	self.global_position = lerp(room_position, camera.get_screen_center_position(), clampf(approach_progress, 0.0, 1.0))
+	# tween rotation
+	self.rotation = lerp(self.rotation, 0.0, approach_progress)
+	# tween scale
+	self.scale = lerp(room_scale, room_scale*4, approach_progress)
 func on_finished_approach(toggle: bool) -> void:
 	if toggle:
 		# signal the game manager to do gamevar-dependent stuff

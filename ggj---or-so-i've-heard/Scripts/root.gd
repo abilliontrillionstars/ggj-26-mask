@@ -23,7 +23,6 @@ func _ready() -> void:
 	# send that to the hint manager
 	$HintManager.guest_list = guest_list
 	$HintManager.rumor_manager = rumors
-
 	# pick a POI
 	cur_POI = guest_list.pick_random()
 	cur_POI.is_poi = true
@@ -35,7 +34,7 @@ func _process(_delta: float) -> void:
 	# run game manager
 	if Input.is_action_just_pressed("toggle guest moving"):
 			toggle_guest_moving()
-	# run dialog that explains first POI	
+	# run dialog that explains first POI
 		# many masks to choose from
 		# Masks move around ambiently (like Find Luigi)
 	# Pick a new mask
@@ -43,7 +42,10 @@ func _process(_delta: float) -> void:
 		# “What have you heard?” vs “It’s you!”
 		# “Any gossip?” vs “I’ve been looking for you”
 	# Get next rumor (alternatively, accuse the POI)
- 
+	
+	# TODO: make this event-based. it slows down the game when run on every process
+	# can't zoom out when we're already zoomed out, or while somebody is speaking
+
 func populate_guest_list() -> void:
 	for zone in range(5):
 		for i in range(25):
@@ -86,8 +88,8 @@ func gen_demo_rumors(guest: Guest) -> void:
 	if num_desc == 0:
 		guest.rumors.append("Hm, wait, that's not right... my memory must have failed me.")
 
+
 func on_guest_pressed(guest: Guest) -> void:
-	print("this is the server! a guest got pressed.")
 	$Camera2D/BackButton.disabled = true
 	# gamevar-dependent handling of approach animation
 	for other in guest_list:
@@ -119,7 +121,5 @@ func on_guest_left(source: Guest):
 
 func _on_camera_animator_animation_finished(_anim_name: StringName) -> void:
 	var oldState = $Camera2D.view
-	if oldState == $Camera2D.viewState.outer:
-		print("moving into guest view")
 	for guest in guest_list:
 		guest.get_child(-1).disabled = oldState != $Camera2D.viewState.outer
